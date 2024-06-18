@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Dino extends JPanel {
+public class Dino extends JPanel implements ActionListener, KeyListener {
 
 	int boardWidth = 800;
     int boardHeight = 550;
@@ -25,52 +25,64 @@ public class Dino extends JPanel {
     
   //dino position
     int dinoX = 50;
-    int dinoY = 200;
+    int dinoY = 400;
     int dinoVelocity = 0;
     int gravity = 1;
     int jumpStrength = -20;
     boolean isJumping = false;
+    Thread thread;
+    
     
     Dino() {
+    	
     	setPreferredSize(new Dimension(boardWidth, boardHeight));
-        setFocusable(true);
-        //
-       
+        setFocusable(true);   
+        System.out.println(dinoY);
+        
+        addKeyListener(this);
+      //  move();   
         //load von Flappy Bird
-        dinobackground = new ImageIcon(getClass().getResource("./dinobackground.png")).getImage();
-        dino = new ImageIcon(getClass().getResource("./dino.png")).getImage();
+        dinobackground = new ImageIcon(getClass().getResource("./dersertdarkbg.png")).getImage();
+        dino = new ImageIcon(getClass().getResource("./dinoyellow.png")).getImage();
+        
+        
+        Timer timer = new Timer(20, e -> gameUpdate());
+        timer.start();
         
         //start timer game loop
         //Um die Hindernisse später an den timer anzupassen 
-        Timer timer = new Timer(20, e -> gameUpdate());
-        timer.start(); 
         
-        
-    }
-    
-	private void gameUpdate() {
-		if (isJumping) { 
-			dinoVelocity += gravity;
-			dinoY += dinoVelocity;
-			
-			if (dinoY<=400) {
-				dinoY=400;
-				isJumping = false;
-				dinoVelocity=0;
+     /*   while (true) {
+			try {
+				thread.sleep(30);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		}
-		repaint();
-	}
+        }*/
+        
+			  
+     
+             
+          
+    }
+    public void gameUpdate() {
+    	
+    	if (isJumping==true) { 
+    		dinoVelocity+=gravity;
+    		dinoY+= dinoVelocity;
+    		
+			}
+    	if (dinoY<=400) {
+    		dinoY=400;
+    		isJumping=false;
+    		dinoVelocity=0;
+    	}
+    	
+    }
+   
 
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("Dino game");
-		Dino game = new Dino();
-		frame.add(game);
-		frame.pack();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-	}
+	
 	public void paintComponent(Graphics g) { // this method is overwritten by the JPanel and called when ever the componend needs to be repainted
 		super.paintComponent(g);//ensures, that the panel is rendered well
 		draw(g);
@@ -78,25 +90,45 @@ public class Dino extends JPanel {
 
 	public void draw(Graphics g) {
         //background
+		
         g.drawImage(dinobackground, 0, 0, this.boardWidth, this.boardHeight, null);
         
         //dino 
-        g.drawImage(dino, 50, 200, null);
+        g.drawImage(dino, dinoX, dinoY, 70, 70, null);
 	}
-	private class Keyhandler extends KeyAdapter {
-		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode()==KeyEvent.VK_SPACE && !isJumping) {
-				isJumping =true;
-				dinoVelocity=jumpStrength;
-			}
+	
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		if (e.getKeyCode()==KeyEvent.VK_SPACE){
+			isJumping= true;
+			dinoVelocity=-9;
+			dinoY+=dinoVelocity;
+			System.out.println("jump");
+			System.out.println(dinoY);
+			
+			
 		}
 	}
-	public static void Dinomoving() {
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
 		
-		
-		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 	
-}
 	
+}
