@@ -18,5 +18,6 @@ public class App {
 		    frame.add(dino);
 		    frame.pack(); // macht das alles richtig dargestellt wird
 		    frame.setVisible(true);
+		    dino.startThread();
 		   }
 		}
