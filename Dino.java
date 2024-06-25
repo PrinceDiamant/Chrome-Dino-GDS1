@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Dino extends JPanel implements ActionListener, KeyListener {
+public class Dino extends JPanel implements ActionListener, KeyListener, Runnable {
 
 	int boardWidth = 800;
     int boardHeight = 550;
@@ -30,6 +30,7 @@ public class Dino extends JPanel implements ActionListener, KeyListener {
     int gravity = 1;
     int jumpStrength = -20;
     boolean isJumping = false;
+    boolean spaceTap=false;
     Thread thread;
     
     
@@ -40,16 +41,17 @@ public class Dino extends JPanel implements ActionListener, KeyListener {
         System.out.println(dinoY);
         
         addKeyListener(this);
-      //  move();   
-        //load von Flappy Bird
+        
+        //load
         dinobackground = new ImageIcon(getClass().getResource("./dersertdarkbg.png")).getImage();
         dino = new ImageIcon(getClass().getResource("./dinoyellow.png")).getImage();
         
         
-        Timer timer = new Timer(20, e -> gameUpdate());
-        timer.start();
+      //  Timer timer = new Timer(20, e -> gameUpdate());
+      //  timer.start();
         
         //start timer game loop
+        
         //Um die Hindernisse später an den timer anzupassen 
         
      /*   while (true) {
@@ -66,7 +68,26 @@ public class Dino extends JPanel implements ActionListener, KeyListener {
              
           
     }
-    public void gameUpdate() {
+    public void startThread() {
+    	thread= new Thread(this);
+    	thread.start();
+    }
+    
+	@Override
+	public void run() {
+	
+		while (thread!=null) {
+			// Posotion Updaten
+			update();
+			
+			//Graphic Updaten
+			repaint();
+			
+		}
+	}
+    
+    
+/*   public void gameUpdate() {
     	
     	if (isJumping==true) { 
     		dinoVelocity+=gravity;
@@ -79,7 +100,7 @@ public class Dino extends JPanel implements ActionListener, KeyListener {
     		dinoVelocity=0;
     	}
     	
-    }
+    }*/
    
 
 	
@@ -90,7 +111,6 @@ public class Dino extends JPanel implements ActionListener, KeyListener {
 
 	public void draw(Graphics g) {
         //background
-		
         g.drawImage(dinobackground, 0, 0, this.boardWidth, this.boardHeight, null);
         
         //dino 
@@ -107,21 +127,16 @@ public class Dino extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		if (e.getKeyCode()==KeyEvent.VK_SPACE){
-			isJumping= true;
-			dinoVelocity=-9;
-			dinoY+=dinoVelocity;
-			System.out.println("jump");
-			System.out.println(dinoY);
-			
-			
+		if (e.getKeyCode()==KeyEvent.VK_SPACE&& isJumping==false){
+			spaceTap=true;
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		/*if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+			spaceTap=false;
+		}*/
 	}
 
 	@Override
@@ -129,6 +144,35 @@ public class Dino extends JPanel implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	public void update() {
+		
+		if (spaceTap==true) {
+			
+			dinoY-=80;
+			System.out.println("jump");
+			System.out.println(dinoY);
+			for (int i=1;i<=80;i++) {
+				
+				dinoY+=1;
+				repaint();
+				System.out.println(dinoY);
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+			spaceTap=false;
+			
+		}
+	}
+
+
+	
 	
 	
 }
