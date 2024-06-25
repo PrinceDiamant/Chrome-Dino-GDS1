@@ -22,16 +22,22 @@ public class Dino extends JPanel implements ActionListener, KeyListener, Runnabl
   //images festlegen
     Image dinobackground;
     Image dino; 
+    Image cactus1;
+    Image cactus2;
+    Image cactus3;
     
   //dino position
     int dinoX = 50;
     int dinoY = 400;
-    int dinoVelocity = 0;
-    int gravity = 1;
-    int jumpStrength = -20;
-    boolean isJumping = false;
+  //
+    int cactusX1 = 560;
+    int cactusX2 = 1120;
+    int cactusX3 = 1680;
+    int cactusY=400;
+    
     boolean spaceTap=false;
     Thread thread;
+    Timer timer;
     
     
     Dino() {
@@ -45,40 +51,33 @@ public class Dino extends JPanel implements ActionListener, KeyListener, Runnabl
         //load
         dinobackground = new ImageIcon(getClass().getResource("./dersertdarkbg.png")).getImage();
         dino = new ImageIcon(getClass().getResource("./dinoyellow.png")).getImage();
+        cactus1 = new ImageIcon(getClass().getResource("./cactus1.png")).getImage();        
+        cactus2 = new ImageIcon(getClass().getResource("./cactus1.png")).getImage(); 
+        cactus2 = new ImageIcon(getClass().getResource("./cactus1.png")).getImage(); 
         
         
-      //  Timer timer = new Timer(20, e -> gameUpdate());
-      //  timer.start();
-        
-        //start timer game loop
-        
-        //Um die Hindernisse später an den timer anzupassen 
-        
-     /*   while (true) {
-			try {
-				thread.sleep(30);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }*/
-        
-			  
-     
              
           
     }
+    	
+   
     public void startThread() {
     	thread= new Thread(this);
     	thread.start();
     }
+   
     
 	@Override
 	public void run() {
 	
 		while (thread!=null) {
-			// Posotion Updaten
-			update();
+			//Koordinaten des Dinos Updaten
+			updateDino();
+	
+			
+			//Koordinaten der Kakteen Updaten
+			//updateCactus();
+			
 			
 			//Graphic Updaten
 			repaint();
@@ -87,36 +86,35 @@ public class Dino extends JPanel implements ActionListener, KeyListener, Runnabl
 	}
     
     
-/*   public void gameUpdate() {
-    	
-    	if (isJumping==true) { 
-    		dinoVelocity+=gravity;
-    		dinoY+= dinoVelocity;
-    		
-			}
-    	if (dinoY<=400) {
-    		dinoY=400;
-    		isJumping=false;
-    		dinoVelocity=0;
-    	}
-    	
-    }*/
+
    
 
 	
 	public void paintComponent(Graphics g) { // this method is overwritten by the JPanel and called when ever the componend needs to be repainted
 		super.paintComponent(g);//ensures, that the panel is rendered well
 		draw(g);
+		drawCactus(g);
 	}
 
 	public void draw(Graphics g) {
-        //background
+        //background:
         g.drawImage(dinobackground, 0, 0, this.boardWidth, this.boardHeight, null);
         
-        //dino 
+        //dino:
         g.drawImage(dino, dinoX, dinoY, 70, 70, null);
+        
+        //kakteen:
+//        g.drawImage(cactus1, cactusX1, cactusY, 70, 70, null);
+//        g.drawImage(cactus2, cactusX2, cactusY, 70, 70, null);
+//        g.drawImage(cactus3, cactusX3, cactusY, 70, 70, null);
+        
 	}
-	
+	public void drawCactus(Graphics g) {
+		 //kakteen:
+        g.drawImage(cactus1, cactusX1, cactusY, 70, 70, null);
+        g.drawImage(cactus2, cactusX2, cactusY, 70, 70, null);
+        g.drawImage(cactus3, cactusX3, cactusY, 70, 70, null);
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -127,7 +125,7 @@ public class Dino extends JPanel implements ActionListener, KeyListener, Runnabl
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		if (e.getKeyCode()==KeyEvent.VK_SPACE&& isJumping==false){
+		if (e.getKeyCode()==KeyEvent.VK_SPACE&& spaceTap==false){
 			spaceTap=true;
 		}
 	}
@@ -146,29 +144,65 @@ public class Dino extends JPanel implements ActionListener, KeyListener, Runnabl
 	}
 	
 	
-	public void update() {
+	public void updateDino() {
+		
+		
 		
 		if (spaceTap==true) {
 			
-			dinoY-=80;
+			dinoY-=130;		
 			System.out.println("jump");
 			System.out.println(dinoY);
-			for (int i=1;i<=80;i++) {
+			for (int i=1;i<=130;i++) {
 				
 				dinoY+=1;
 				repaint();
-				System.out.println(dinoY);
-				try {
-					Thread.sleep(5);
-				} catch (InterruptedException e1) {
+			try {
+				thread.sleep(4);
+				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					e.printStackTrace();
 				}
+				//repaint();
+				System.out.println(dinoY);
+				
 			}
 			
 			spaceTap=false;
 			
 		}
+	
+	}
+		
+	public void updateCactus() {
+		
+		while(1!=0) {
+			cactusX1-=10;
+			cactusX2-=10;
+			cactusX3-=10;
+			System.out.println(cactusX1+"cactus");
+			System.out.println(cactusX2);
+			System.out.println(cactusX3);
+			
+			try {
+				thread.sleep(25);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (cactusX1<=0) {
+				cactusX1=560;
+		}
+			if (cactusX2<=0) {
+				cactusX2=1120;
+		}
+			if (cactusX3<=0) {
+				cactusX3=1680;
+			}
+			repaint();
+
+		}
+		
 	}
 
 
