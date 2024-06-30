@@ -107,7 +107,18 @@ public class Dino extends JPanel implements ActionListener, KeyListener, Runnabl
 //        g.drawImage(cactus1, cactusX1, cactusY, 70, 70, null);
 //        g.drawImage(cactus2, cactusX2, cactusY, 70, 70, null);
 //        g.drawImage(cactus3, cactusX3, cactusY, 70, 70, null);
-        
+
+	//score
+        g.setColor(Color.white);
+
+        g.setFont(new Font("Arial", Font.PLAIN, 32));
+		
+	if (gameOver = 1) {
+		// draw score screen + wenns geht in die Mitte
+		g.drawString("Game Over: " + String.valueOf((int) score), 10, 35);
+	}else{
+		// draw score top corner
+		g.drawString(String.valueOf((int) score), 10, 35);
 	}
 	public void drawCactus(Graphics g) {
 		 //kakteen:
@@ -127,6 +138,14 @@ public class Dino extends JPanel implements ActionListener, KeyListener, Runnabl
 		
 		if (e.getKeyCode()==KeyEvent.VK_SPACE&& spaceTap==false){
 			spaceTap=true;
+
+			if (gameOver = 1) {
+				//reset everything
+				// score 0
+				// position Dino
+				// cactus place stop
+				// velocity 0
+				// gameOver back to 0
 		}
 	}
 
