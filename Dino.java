@@ -190,9 +190,19 @@ public class Dino extends JPanel implements ActionListener, KeyListener, Runnabl
 			spaceTap=false;
 			
 		}
+		if (collision(dino, cactus)) {
+                gameOver = true;
+            }
+        
+
+        if (/*irgenwas mit DinoY */ > boardHeight) {
+            gameOver = true;
 	
+		}
 	}
-		
+	 boolean collision(Dino a, Cactus b) {
+		return /*hier muss viel rein */;
+	 }
 	public void updateCactus() {
 		
 		while(1!=0) {
