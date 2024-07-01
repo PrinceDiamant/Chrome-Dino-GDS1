@@ -7,8 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
+import java.util.Random;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -33,6 +34,7 @@ public class Dino extends JPanel implements ActionListener {
     int cactusX2 = 1120;
     int cactusX3 = 1680;
     int cactusY = 400;
+    Random random = new Random();
 
     boolean spaceTap = false;
     boolean gameOver = false;
@@ -44,6 +46,7 @@ public class Dino extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         setFocusable(true);
 
+        // keine Ahnung über das Layout aber es funktioniert gut
         addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE && !spaceTap) {
@@ -58,13 +61,13 @@ public class Dino extends JPanel implements ActionListener {
         });
 
         // load images
-        dinobackground = new ImageIcon(getClass().getResource("./desertdarkbg.png")).getImage();
-        dino = new ImageIcon(getClass().getResource("./dinoyellow.png")).getImage();
-        cactus1 = new ImageIcon(getClass().getResource("./cactus1.png")).getImage();
-        cactus2 = new ImageIcon(getClass().getResource("./cactus2.png")).getImage();
-        cactus3 = new ImageIcon(getClass().getResource("./cactus3.png")).getImage();
+        dinobackground = new ImageIcon(Objects.requireNonNull(getClass().getResource("./desertdarkbg.png"))).getImage();
+        dino = new ImageIcon(Objects.requireNonNull(getClass().getResource("./dinoyellow.png"))).getImage();
+        cactus1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("./cactus1.png"))).getImage();
+        cactus2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("./cactus2.png"))).getImage();
+        cactus3 = new ImageIcon(Objects.requireNonNull(getClass().getResource("./cactus3.png"))).getImage();
 
-        gameTimer = new Timer(1000/40, this);
+        gameTimer = new Timer(1000/60, this);
         gameTimer.start();
     }
 
@@ -75,21 +78,21 @@ public class Dino extends JPanel implements ActionListener {
     }
 
     public void draw(Graphics g) {
-        // background:
         g.drawImage(dinobackground, 0, 0, boardWidth, boardHeight, null);
 
-        // dino:
         g.drawImage(dino, dinoX, dinoY, 70, 70, null);
 
-        // cactus:
         drawCactus(g);
 
         // score
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.PLAIN, 32));
 
-        if (gameOver) {
+        if (gameOver == true) {
             g.drawString("Game Over: " + String.valueOf((int) score), boardWidth / 2 - 100, boardHeight / 2);
+
+            // Highscore
+
         } else {
             g.drawString(String.valueOf((int) score), 10, 35);
         }
@@ -134,33 +137,39 @@ public class Dino extends JPanel implements ActionListener {
     }
 
     public void updateCactus() {
+        // schritte oder Geschwindigkeit für Kakteen
         cactusX1 -= 10;
         cactusX2 -= 10;
         cactusX3 -= 10;
 
+        // die Random sorgt für ein abwechslungsreiches Spiel und ist immer in Phassen unterteilt
+        int cactusDistance = random.nextInt(200, 500);
+
         if (cactusX1 <= 0) {
-            cactusX1 = boardWidth;
+            cactusX1 = boardWidth + cactusDistance;
         }
         if (cactusX2 <= 0) {
-            cactusX2 = boardWidth;
+            cactusX2 = boardWidth + cactusDistance;
         }
         if (cactusX3 <= 0) {
-            cactusX3 = boardWidth;
+            cactusX3 = boardWidth + cactusDistance;
         }
     }
 
     boolean collision() {
-        int dinoRight = dinoX + 50;
-        int dinoBottom = dinoY + 50;
+        // Hitbox Dino
+        int dinoRight = dinoX + 60;
+        int dinoBottom = dinoY + 60;
 
-        int cactusRight1 = cactusX1 + 50;
-        int cactusBottom1 = cactusY + 50;
+        // Hitbox Cactus
+        int cactusRight1 = cactusX1 + 40;
+        int cactusBottom1 = cactusY + 40;
 
-        int cactusRight2 = cactusX2 + 50;
-        int cactusBottom2 = cactusY + 50;
+        int cactusRight2 = cactusX2 + 40;
+        int cactusBottom2 = cactusY + 40;
 
-        int cactusRight3 = cactusX3 + 50;
-        int cactusBottom3 = cactusY + 50;
+        int cactusRight3 = cactusX3 + 40;
+        int cactusBottom3 = cactusY + 40;
 
         return (dinoX < cactusRight1 && dinoRight > cactusX1 && dinoY < cactusBottom1 && dinoBottom > cactusY) ||
                 (dinoX < cactusRight2 && dinoRight > cactusX2 && dinoY < cactusBottom2 && dinoBottom > cactusY) ||
@@ -179,10 +188,11 @@ public class Dino extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // action while the game runs
         if (!gameOver) {
             updateDino();
             updateCactus();
-            score += 0.1; // Increment score
+            score += 0.1; // higher score over Time
         }
         repaint();
     }
