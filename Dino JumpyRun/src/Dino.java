@@ -33,9 +33,9 @@ public class Dino extends JPanel implements ActionListener {
     int dinoX = 50;
     int dinoY = 400;
 
-    int cactusX1 = 560;
-    int cactusX2 = 1120;
-    int cactusX3 = 1680;
+    int cactusX1 = 900;
+    int cactusX2 = 1200;
+    int cactusX3 = 1500;
     int cactusY = 400;
 
     Random random = new Random();
@@ -151,16 +151,16 @@ public class Dino extends JPanel implements ActionListener {
         cactusX2 -= 10;
         cactusX3 -= 10;
 
-        int cactusDistance = random.nextInt(600) + 300;
+        int cactusDistance = random.nextInt(500, 700) ;
 
         if (cactusX1 <= 0) {
-            cactusX1 = boardWidth + cactusDistance;
+            cactusX1 = 1000 + cactusDistance;
         }
         if (cactusX2 <= 0) {
-            cactusX2 = boardWidth + cactusDistance;
+            cactusX2 = 1000 + cactusDistance;
         }
         if (cactusX3 <= 0) {
-            cactusX3 = boardWidth + cactusDistance;
+            cactusX3 = 1000 + cactusDistance;
         }
     }
 
