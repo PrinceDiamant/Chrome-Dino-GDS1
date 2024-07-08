@@ -1,0 +1,23 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    height: 100%;
+    background-image: url("dersertdarkbg.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+
+}
+nav{
+    font-size: 30px;
+    position: absolute;
+    width: 20%;
+}
+.links{
+    color:inherit;
+    color: rgb(245, 201, 113);
+    text-decoration: none;
+}
