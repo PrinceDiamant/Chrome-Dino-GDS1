@@ -1,0 +1,54 @@
+
+body{
+    height: 100%;
+    background-image: url("dersertdarkbg.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0px;
+
+}
+main{
+    margin: 20px;
+}
+h1{
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+h3{
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.menubar ul{
+    list-style-type: none;
+    background-color: rgb(65, 65, 65);
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+}
+.menubar a{
+    font-size: 30px;
+    color: white;
+    text-decoration: none;
+    padding: 30px;
+    display: block;
+    text-align: center;
+}
+
+.menubar a:hover{
+    background-color: rgb(147, 147, 147); }
+.menubar li{
+    float: left;
+}
+p{
+    color: white;
+    position: relative;
+    max-height: 50%;
+}
+div{
+    position: relative;
+    color: white;
+    width: 50%;
+    left: 30%;
+}
